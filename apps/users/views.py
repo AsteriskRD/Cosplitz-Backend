@@ -10,26 +10,6 @@ from apps.users.service import user_create
 
 
 # Create your views here.
-class UserCreateView(APIView):
-    class InputSerializer(serializers.Serializer):
-        email = serializers.EmailField()
-        username = serializers.CharField()
-        password = serializers.CharField()
-        address = serializers.CharField()
-        city = serializers.CharField()
-        state = serializers.CharField()
-        zipcode = serializers.CharField()
-
-    def post(self, request):
-        serializer = self.InputSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-
-        user = user_create(**serializer.validated_data)
-
-        data = OutputSerializer(data=request.data)
-
-        return Response(data)
-
 class UserDetailsAPI(APIView):
     def get(self, request, user_id):
         # user = user_get(user_id)

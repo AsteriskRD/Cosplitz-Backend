@@ -28,6 +28,9 @@ class BaseUserManager(BUM):
 
 class User(BaseModel, AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(verbose_name="email address", max_length=255, unique=True)
+    first_name = models.CharField(verbose_name="first name", max_length=255)
+    last_name = models.CharField(verbose_name="last name", max_length=255)
+    username = models.CharField(verbose_name="username", max_length=255, unique=True)
     is_admin = models.BooleanField(default=False)
     is_active = models.BooleanField(default=False)
 

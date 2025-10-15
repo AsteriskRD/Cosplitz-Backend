@@ -3,3 +3,4 @@ django-environ==0.12.0
 psycopg2==2.9.10
 djangorestframework==3.16.1
 drf-spectacular>=0.15.1,<0.16
+djangorestframework-simplejwt

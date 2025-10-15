@@ -43,11 +43,13 @@ INSTALLED_APPS = [
 
     #installed_app
     'rest_framework',
-    # 'drf_spectacular'
+    'drf_spectacular',
+    ''
     
     #local apps
     'apps.common.apps.CommonConfig',
     'apps.users.apps.UsersConfig',
+    'apps.authentication.apps.AuthenticationConfig'
 
 ]
 
@@ -141,6 +143,21 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Custom user model
 AUTH_USER_MODEL = 'users.User'
+
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ],
+    'DEFAULT_SCHEMA_CLASS' : 'drf_spectacular.openapi.AutoSchema',
+}
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Your Project API',
+    'DESCRIPTION': 'Your project description',
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
+    # OTHER SETTINGS
+}
 
 # from config.settings.celery import *
 # from config.settings.file_storage import *

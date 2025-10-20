@@ -13,8 +13,8 @@ def user_get_login_data(*, user : User | AbstractBaseUser):
     }
 
 def get_user_token_for_user(user : User | AbstractBaseUser):
-    if not user.is_active:
-        raise AuthenticationFailed("User is not active")
+    # if not user.is_active:
+    #     raise AuthenticationFailed("User is not active")
 
     refresh = RefreshToken.for_user(user)
 

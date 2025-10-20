@@ -10,6 +10,19 @@ class UserSerializer(serializers.ModelSerializer):
                   'first_name', 'last_name', 'username']
         extra_kwargs = {'password': {'write_only': True}}
 
-class OutputSerializer(serializers.Serializer):
-    email = serializers.EmailField()
-    username = serializers.CharField()
+class OutputSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = get_user_model()
+        fields = ['id', 'email', 'username', 'first_name', 'last_name']
+        read_only_fields = ['id']
+
+
+class UserRegisterResponseSerializer(serializers.Serializer):
+    """Full response wrapper for user registration"""
+    message = serializers.CharField()
+    user = OutputSerializer()
+
+class ErrorResponseSerializer(serializers.Serializer):
+    """Error response schema"""
+    error = serializers.CharField()
+    details = serializers.CharField(required=False)

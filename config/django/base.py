@@ -134,6 +134,10 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
+# File uploads and media configuration
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
@@ -144,3 +148,5 @@ AUTH_USER_MODEL = 'users.User'
 
 # from config.settings.celery import *
 # from config.settings.file_storage import *
+
+

@@ -159,5 +159,16 @@ SPECTACULAR_SETTINGS = {
     # OTHER SETTINGS
 }
 
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 465
+EMAIL_HOST_USER = 'omotosoeniola191@gmail.com'
+EMAIL_HOST_PASSWORD = 'ecqf xeem dylq iocj'
+EMAIL_USE_TLS = False
+EMAIL_USE_SSL = True
+DEFAULT_FROM_EMAIL = 'omotosoeniola191@gmail.com'
+
+
+# 84193586c935f52baf65ca968f9a340b
 # from config.settings.celery import *
 # from config.settings.file_storage import *

@@ -1,8 +1,10 @@
 import uuid
+from datetime import timedelta
 
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from django.contrib.auth.models import BaseUserManager as BUM
 from django.db import models
+from django.utils import  timezone
 
 from apps.common.models import BaseModel
 
@@ -43,3 +45,19 @@ class User(BaseModel, AbstractBaseUser, PermissionsMixin):
 
     def is_staff(self):
         return self.is_admin
+
+
+def get_otp_expiry_time():
+    return timezone.now() + timedelta(minutes=5)
+
+class EmailOtp(BaseModel):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    otp_code = models.CharField(max_length=6)
+    # expiry_at = models.DateTimeField(default=get_otp_expiry_time)
+    expiry_at = models.DateTimeField()
+
+    def is_expired(self):
+        return timezone.now() > self.expiry_at
+
+    def __str__(self):
+        return f"OTP for {self.user.email}"

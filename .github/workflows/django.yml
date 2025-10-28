@@ -28,10 +28,10 @@ jobs:
         run: |
           python manage.py test
 
-      - name: Build & push Docker image
-        uses: mr-smithers-excellent/docker-build-push@v6
-        with:
-          image: ennyboy/cosplitzbackend
-          registry: docker.io
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
+    #   - name: Build & push Docker image
+    #     uses: mr-smithers-excellent/docker-build-push@v6
+    #     with:
+    #       image: ennyboy/cosplitzbackend
+    #       registry: docker.io
+    #       username: ${{ secrets.DOCKER_USERNAME }}
+    #       password: ${{ secrets.DOCKER_PASSWORD }}

@@ -6,8 +6,7 @@ class UserSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True, required=True, min_length=8)
     class Meta:
         model = get_user_model()
-        fields = ['email', 'password',
-                  'first_name', 'last_name', 'username']
+        fields = '__all__'
         extra_kwargs = {'password': {'write_only': True}}
 
 class OutputSerializer(serializers.ModelSerializer):
@@ -16,6 +15,14 @@ class OutputSerializer(serializers.ModelSerializer):
         fields = ['id', 'email', 'username', 'first_name', 'last_name']
         read_only_fields = ['id']
 
+class UserUpdateSerializer(serializers.Serializer):
+    email = serializers.EmailField(required=False)
+    username = serializers.CharField(required=False)
+    password = serializers.CharField(required=False)
+    address = serializers.CharField(required=False)
+    city = serializers.CharField(required=False)
+    state = serializers.CharField(required=False)
+    zipcode = serializers.CharField(required=False)
 
 class UserRegisterResponseSerializer(serializers.Serializer):
     """Full response wrapper for user registration"""

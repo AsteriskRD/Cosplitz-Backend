@@ -168,27 +168,6 @@ EMAIL_USE_SSL = True
 DEFAULT_FROM_EMAIL = env('DEFAULT_FROM_EMAIL')
 
 
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'handlers': {
-        'file': {
-            'level': 'ERROR',
-            'class': 'logging.FileHandler',
-            'filename': '/tmp/django-errors.log',
-        },
-    },
-    'loggers': {
-        'django': {
-            'handlers': ['file'],
-            'level': 'ERROR',
-            'propagate': True,
-        },
-    },
-}
-
-
-
 # 84193586c935f52baf65ca968f9a340b
 # from config.settings.celery import *
 # from config.settings.file_storage import *

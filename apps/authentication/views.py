@@ -36,6 +36,17 @@ class UserRegisterView(APIView):
 
         try:
             user = user_create(**serializer.validated_data)
+            # context = {
+            #     'subject': 'Welcome to Our Platform',
+            #     'to_email': 'omotosoeniola2@gmail.com',
+            #     'content': {
+            #         'otp': otp_code
+            #     }
+            # }
+            # template = 'emails/login_email.html'
+            # success = simple_mail(html_template=template, context=context)
+            # if not success:
+            #     return Response({'error': "message not sent"})
         except Exception as e:
             return Response({
                 "error" : "Failed to create user", "details" :  str(e),
@@ -77,17 +88,7 @@ class UserLoginView(APIView):
         data = user_get_login_data(user=user)
         jwt_token = refresh = RefreshToken.for_user(user)
         otp_code = generate_otp(user)
-        context = {
-            'subject': 'Welcome to Our Platform',
-            'to_email': 'omotosoeniola2@gmail.com',
-            'content' : {
-                'otp' : otp_code
-            }
-        }
-        template = 'emails/login_email.html'
-        success = simple_mail(html_template=template, context=context)
-        if not success :
-            return Response({'error' : "message not sent"})
+
         return Response({
             "message" : "Login successful",
             "token" : str(jwt_token.access_token),

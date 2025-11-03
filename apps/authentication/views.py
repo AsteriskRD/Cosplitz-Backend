@@ -9,6 +9,7 @@ from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
 
 from apps.authentication.selector import user_get_login_data, get_user_token_for_user
+from apps.authentication.task import send_otp_code_mail
 from apps.common.utils import simple_mail, generate_otp
 from apps.users.models import EmailOtp
 from apps.users.service import user_create
@@ -36,17 +37,8 @@ class UserRegisterView(APIView):
 
         try:
             user = user_create(**serializer.validated_data)
-            # context = {
-            #     'subject': 'Welcome to Our Platform',
-            #     'to_email': 'omotosoeniola2@gmail.com',
-            #     'content': {
-            #         'otp': otp_code
-            #     }
-            # }
-            # template = 'emails/login_email.html'
-            # success = simple_mail(html_template=template, context=context)
-            # if not success:
-            #     return Response({'error': "message not sent"})
+            otp_code = generate_otp(user)
+            send_otp_code_mail.delay(user.email, otp_code)
         except Exception as e:
             return Response({
                 "error" : "Failed to create user", "details" :  str(e),
@@ -108,19 +100,11 @@ class SendUserOtp(APIView):
                 'message': 'User does not exist',
                 'status_code': status.HTTP_404_NOT_FOUND
             }, status=status.HTTP_404_NOT_FOUND)
-
         otp_code = generate_otp(user)
-        context = {
-            'subject': 'Verification Otp',
-            'to_email': user.email,
-            'content': {
-                'otp': otp_code
-            }
-        }
-        template = 'emails/login_email.html'
-        success = simple_mail(html_template=template, context=context)
-        if not success :
-            return Response({'error' : "message not sent"})
+        send_otp_code_mail.delay(user.email, otp_code)
+
+        # if not success :
+        #     return Response({'error' : "message not sent"})
         return Response({
             'message': 'OTP sent',
         },status=status.HTTP_200_OK)

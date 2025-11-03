@@ -18,6 +18,19 @@ services:
     env_file:
       - .env
 
+  celery:
+    build:
+      context: .
+      dockerfile: ./docker/local.Dockerfile
+      args:
+        - DEV=true
+    container_name: celery_worker
+    command: celery -A config worker --loglevel=info
+    env_file:
+      - .env
+    volumes:
+      - .:/app
+
 volumes:
   dev-static-data:
 

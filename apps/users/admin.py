@@ -1,13 +1,13 @@
 from django.contrib import admin
+from django.core.mail import send_mail
 from .models import KYCVerification
 
-# Register your models here.
-
-#KYC admin management for manual verification.
 
 @admin.register(KYCVerification)
 class KYCVerificationAdmin(admin.ModelAdmin):
-    #Admin panel for KYC records. Allows viewing, filtering, and verifying users manually.
+
+    #Admin panel for KYC records. Allows viewing, filtering, verifying, and rejecting users manually.
+
     list_display = (
         "user",
         "first_name",
@@ -25,16 +25,46 @@ class KYCVerificationAdmin(admin.ModelAdmin):
     actions = ["verify_selected", "reject_selected"]
 
     def verify_selected(self, request, queryset):
-        #Manually verify selected KYC records from admin dashboard.
-        updated = queryset.update(is_verified=True, verified_by_admin=True)
-        self.message_user(request, f"{updated} user(s) verified successfully!")
+        """
+        Manually verify selected KYC records from the admin dashboard.
+        Also send email notification to users after approval.
+        """
+        for kyc in queryset:
+            kyc.is_verified = True
+            kyc.verified_by_admin = True
+            kyc.save()
+
+            # Send approval email
+            send_mail(
+                subject="KYC Verification Approved",
+                message=f"Hello {kyc.first_name},\n\nYour KYC verification has been approved successfully.\n\nThank you!",
+                from_email="noreply@yourdomain.com",
+                recipient_list=[kyc.email],
+                fail_silently=True,
+            )
+
+        self.message_user(request, f"{queryset.count()} user(s) verified successfully!")
 
     verify_selected.short_description = " Verify selected KYC users"
 
     def reject_selected(self, request, queryset):
-        #Mark selected KYC users as failed verification.
-        updated = queryset.update(is_verified=False, verified_by_admin=False)
-        self.message_user(request, f"{updated} user(s) rejected.")
+    
+        #Mark selected KYC users as failed verification and send rejection email.
+
+        for kyc in queryset:
+            kyc.is_verified = False
+            kyc.verified_by_admin = True  # Important: Set to True so system knows admin reviewed it
+            kyc.save()
+
+            # Send rejection email
+            send_mail(
+                subject="KYC Verification Rejected",
+                message=f"Hello {kyc.first_name},\n\nUnfortunately, your KYC verification was not successful.\nPlease review your submission and try again.\n\nThank you!",
+                from_email="noreply@yourdomain.com",
+                recipient_list=[kyc.email],
+                fail_silently=True,
+            )
+
+        self.message_user(request, f"{queryset.count()} user(s) rejected.")
 
     reject_selected.short_description = " Reject selected KYC users"
-

@@ -43,13 +43,11 @@ INSTALLED_APPS = [
 
     #installed_app
     'rest_framework',
-    'drf_spectacular',
-    ''
+    # 'drf_spectacular'
     
     #local apps
     'apps.common.apps.CommonConfig',
     'apps.users.apps.UsersConfig',
-    'apps.authentication.apps.AuthenticationConfig'
 
 ]
 
@@ -100,6 +98,16 @@ DATABASES = {
 }
 
 
+EMAIL_BACKEND = env('EMAIL_BACKEND', default='django.core.mail.backends.smtp.EmailBackend')
+EMAIL_HOST = env('EMAIL_HOST', default='smtp.gmail.com')
+EMAIL_PORT = env('EMAIL_PORT', default=587, cast=int)
+EMAIL_USE_TLS = env('EMAIL_USE_TLS', default=True, cast=bool)
+EMAIL_HOST_USER = env('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
+DEFAULT_FROM_EMAIL = env('DEFAULT_FROM_EMAIL', default=EMAIL_HOST_USER)
+
+
+
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
 
@@ -136,6 +144,10 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
+# File uploads and media configuration
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
@@ -144,51 +156,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Custom user model
 AUTH_USER_MODEL = 'users.User'
 
-REST_FRAMEWORK = {
-    "DEFAULT_AUTHENTICATION_CLASSES": [
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
-    ],
-    'DEFAULT_SCHEMA_CLASS' : 'drf_spectacular.openapi.AutoSchema',
-}
-
-SPECTACULAR_SETTINGS = {
-    'TITLE': 'Your Project API',
-    'DESCRIPTION': 'Your project description',
-    'VERSION': '1.0.0',
-    'SERVE_INCLUDE_SCHEMA': False,
-    # OTHER SETTINGS
-}
-
-#CACHE
-CACHES = {
-    "default": {
-        "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": env("CACHE_URL"),
-        "OPTIONS": {
-            "CLIENT_CLASS": "django_redis.client.DefaultClient",
-        }
-    }
-}
-
-
-EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 465
-EMAIL_HOST_USER = 'omotosoeniola191@gmail.com'
-EMAIL_HOST_PASSWORD = 'smrq xyfq mltu lzpa'
-EMAIL_USE_SSL  = True
-DEFAULT_FROM_EMAIL ='omotosoeniola191@gmail.com'
-
-# EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-# EMAIL_HOST = env('EMAIL_HOST')
-# EMAIL_PORT = env('EMAIL_PORT')
-# EMAIL_HOST_USER = env('EMAIL_HOST_USER')
-# EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
-# EMAIL_USE_SSL  = True
-# DEFAULT_FROM_EMAIL = env('DEFAULT_FROM_EMAIL')
-
-
-from config.settings.celery import *
-
-# 84193586c935f52baf65ca968f9a340b
+# from config.settings.celery import *
 # from config.settings.file_storage import *
+
+

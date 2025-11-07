@@ -4,7 +4,7 @@ from http.server import SimpleHTTPRequestHandler, HTTPServer
 import subprocess
 
 def run_celery():
-    subprocess.call(["celery", "-A", "your_project", "worker", "--loglevel=info"])
+    subprocess.call(["celery", "-A", "config", "worker", "--loglevel=info"])
 
 def run_server():
     port = int(os.environ.get("PORT", 10000))

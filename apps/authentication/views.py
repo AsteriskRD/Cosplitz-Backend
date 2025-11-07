@@ -101,6 +101,7 @@ class SendUserOtp(APIView):
                 'status_code': status.HTTP_404_NOT_FOUND
             }, status=status.HTTP_404_NOT_FOUND)
         otp_code = generate_otp(user)
+        print(user.email)
         send_otp_code_mail.delay(user.email, otp_code)
 
         # if not success :

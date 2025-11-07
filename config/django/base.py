@@ -9,7 +9,8 @@ https://docs.djangoproject.com/en/5.2/topics/settings/
 For the full list of django and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
-import  os
+from config.settings.celery import *
+import os
 
 from django.template import Engine
 
@@ -41,12 +42,12 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    #installed_app
+    # installed_app
     'rest_framework',
     'drf_spectacular',
     ''
-    
-    #local apps
+
+    # local apps
     'apps.common.apps.CommonConfig',
     'apps.users.apps.UsersConfig',
     'apps.authentication.apps.AuthenticationConfig'
@@ -148,7 +149,7 @@ REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ],
-    'DEFAULT_SCHEMA_CLASS' : 'drf_spectacular.openapi.AutoSchema',
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
 }
 
 SPECTACULAR_SETTINGS = {
@@ -159,7 +160,7 @@ SPECTACULAR_SETTINGS = {
     # OTHER SETTINGS
 }
 
-#CACHE
+# CACHE
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
@@ -171,18 +172,14 @@ CACHES = {
 }
 
 
-
-
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = env('EMAIL_HOST')
 EMAIL_PORT = env('EMAIL_PORT')
 EMAIL_HOST_USER = env('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
-EMAIL_USE_SSL  = True
+EMAIL_USE_SSL = True
 DEFAULT_FROM_EMAIL = env('DEFAULT_FROM_EMAIL')
 
-
-from config.settings.celery import *
 
 # 84193586c935f52baf65ca968f9a340b
 # from config.settings.file_storage import *

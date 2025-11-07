@@ -1,11 +1,10 @@
 from django.urls import path
 
-from .views import UserDetailsAPI, UserUpdateApi
+from .views import UserUpdateApi, UserDetailsAPI, KYCSubmitAPI, KYCDetailAPI
 
 urlpatterns = [
-
-    path('info', UserDetailsAPI.as_view(), name="details"),
     path('<int:user_id>/update/', UserUpdateApi.as_view(), name="update"),
+    path('<int:user_id>/', UserDetailsAPI.as_view(), name="details"),
 
     # --- KYC endpoints ---
     path("kyc/submit/", KYCSubmitAPI.as_view(), name="kyc_submit"),

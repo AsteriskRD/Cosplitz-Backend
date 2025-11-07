@@ -11,6 +11,12 @@ from apps.common.utils import simple_mail, generate_otp
 from apps.users.service import user_create, user_update
 
 
+from rest_framework.permissions import IsAuthenticated
+from rest_framework import status
+
+from .models import KYCVerification
+
+
 # Create your views here.
 class UserDetailsAPI(APIView):
     permission_classes = [IsAuthenticated]

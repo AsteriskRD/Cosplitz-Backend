@@ -35,8 +35,8 @@ class User(BaseModel, AbstractBaseUser, PermissionsMixin):
         verbose_name="email address", max_length=255, unique=True)
     first_name = models.CharField(verbose_name="first name", max_length=255)
     last_name = models.CharField(verbose_name="last name", max_length=255)
-    username = models.CharField(
-        verbose_name="username", max_length=255, unique=True)
+    nationality = models.CharField(
+        verbose_name="nationality", max_length=255)
     is_admin = models.BooleanField(default=False)
     is_active = models.BooleanField(default=False)
 
@@ -98,3 +98,35 @@ class KYCVerification(models.Model):
 
     def __str__(self):
         return f"OTP for {self.user.email}"
+
+
+class Notification(models.Model):
+    NOTIFICATION_TYPES = [
+        ('split_created', 'Split Created'),
+        ('split_updated', 'Split Updated'),
+        ('split_joined', 'Split Joined'),
+        ('split_deleted', 'Split Deleted'),
+        ('account_updated', 'Account Updated'),
+        ('kyc_completed', 'KYC Completed'),
+        ('payement_recieved', 'Payment Recieved'),
+    ]
+
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name="notifications",
+    )
+    notification_type = models.CharField(max_length=50, choices=NOTIFICATION_TYPES)
+    title = models.CharField(max_length=100)
+    text = models.TextField()
+    is_read = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+    read_at = models.DateTimeField(null=True, blank=True)
+
+    class Meta:
+        ordering = ['-created_at']
+        indexes = [
+            models.Index(fields=['user', 'created_at']),
+            models.Index(fields=['user', 'read_at']),
+
+        ]

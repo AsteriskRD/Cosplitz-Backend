@@ -1,7 +1,8 @@
-from rest_framework import serializers
-from .models import KYCVerification
+
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
+
+from .models import KYCVerification, Notification
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -42,6 +43,13 @@ class ErrorResponseSerializer(serializers.Serializer):
     error = serializers.CharField()
     details = serializers.CharField(required=False)
 
+
+class NotificationSerializers(serializers.ModelSerializer):
+    """Notification schema"""
+    class Meta:
+        model = Notification
+        fields = '__all__'
+        read_only_fields = ['id', 'message', 'notification_type', 'user_id']
 
 # Serializer for KYC verification data. Used to validate incoming JSON data and return clean API responses.
 class KYCSerializer(serializers.ModelSerializer):

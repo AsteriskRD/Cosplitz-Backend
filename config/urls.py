@@ -19,9 +19,14 @@ from django.urls import path, include
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView, SpectacularRedocView
 from django.conf import settings
 from django.conf.urls.static import static
+from rest_framework.routers import DefaultRouter
+from apps.splitz.views import SplitsViewSet
 
 from apps.users.views import UserDetailsAPI
 
+
+router = DefaultRouter()
+router.register('splits', SplitsViewSet)
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/schema/', SpectacularAPIView.as_view(), name='api-schema'),
@@ -31,6 +36,8 @@ urlpatterns = [
          name='api-redocs'),
     path('api/', include('apps.authentication.urls')),
     path('api/user/', include('apps.users.urls'))
+
+    path('api/', include(router.urls)),
 ]
 
 if settings.DEBUG:

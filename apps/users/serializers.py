@@ -1,4 +1,4 @@
-
+from rest_framework import serializers
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
 
@@ -44,11 +44,11 @@ class ErrorResponseSerializer(serializers.Serializer):
     details = serializers.CharField(required=False)
 
 
+
 class NotificationSerializers(serializers.ModelSerializer):
     """Notification schema"""
     class Meta:
         model = Notification
         fields = '__all__'
         read_only_fields = ['id', 'message', 'notification_type', 'user_id']
-
 

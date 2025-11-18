@@ -21,7 +21,8 @@ from apps.users.service import user_create, user_update
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import status
 
-from .models import KYCVerification, Notification
+from .models import  Notification
+
 
 
 # Create your views here.
@@ -56,7 +57,6 @@ class UserUpdateApi(APIView):
         data = UserSerializer(user).data
 
         return Response(data)
-
 
 class NotificationViewSet(mixins.ListModelMixin,
                           mixins.UpdateModelMixin,

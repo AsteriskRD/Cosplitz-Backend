@@ -1,7 +1,8 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 
-from .views import UserUpdateApi, UserDetailsAPI, KYCSubmitAPI, KYCDetailAPI, NotificationViewSet
+from .views import UserUpdateApi, UserDetailsAPI, NotificationViewSet
+from .views import UserUpdateApi, UserDetailsAPI
 
 
 
@@ -15,6 +16,5 @@ urlpatterns = [
     
 
     # --- Notifiaction endpoints-----
-
 
 ]

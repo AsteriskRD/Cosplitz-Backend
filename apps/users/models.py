@@ -72,7 +72,6 @@ class EmailOtp(BaseModel):
 
 
 
-
 class Notification(models.Model):
     NOTIFICATION_TYPES = [
         ('split_created', 'Split Created'),
@@ -103,3 +102,4 @@ class Notification(models.Model):
             models.Index(fields=['user', 'read_at']),
 
         ]
+

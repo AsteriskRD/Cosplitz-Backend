@@ -50,7 +50,9 @@ INSTALLED_APPS = [
     # local apps
     'apps.common.apps.CommonConfig',
     'apps.users.apps.UsersConfig',
-    'apps.authentication.apps.AuthenticationConfig'
+    'apps.authentication.apps.AuthenticationConfig',
+    'apps.kyc',
+    'apps.admin_panel',
 
 ]
 
@@ -89,7 +91,8 @@ WSGI_APPLICATION = 'config.wsgi.application'
 
 DATABASES = {
     'default': {
-        # 'Engine': 'django.db.backends.sqlite3',
+        #'ENGINE': 'django.db.backends.sqlite3',
+        #'NAME': BASE_DIR / 'db.sqlite3',
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': env('DB_NAME'),
         'USER': env('DB_USER'),
@@ -137,6 +140,10 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
+# File uploads and media configuration
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
@@ -171,13 +178,13 @@ CACHES = {
     }
 }
 
-
+#EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = env('EMAIL_HOST')
 EMAIL_PORT = env('EMAIL_PORT')
 EMAIL_HOST_USER = env('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
-EMAIL_USE_SSL = True
+EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = env('DEFAULT_FROM_EMAIL')
 
 

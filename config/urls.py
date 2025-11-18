@@ -30,9 +30,14 @@ urlpatterns = [
     path('api/redocs/', SpectacularRedocView.as_view(url_name='api-schema'),
          name='api-redocs'),
     path('api/', include('apps.authentication.urls')),
-    path('api/user/', include('apps.users.urls'))
+    path('api/user/', include('apps.users.urls')),
+
+    path('kyc/', include('apps.kyc.urls')),
+    path("admin-api/", include("apps.admin_panel.urls")),
+
 ]
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL,
                           document_root=settings.MEDIA_ROOT)
+

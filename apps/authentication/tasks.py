@@ -1,8 +1,8 @@
 from celery import shared_task
 from django.contrib.auth import get_user_model
 
-from apps.common.utils import simple_mail, generate_otp
-from apps.splitz.models import Splits
+from apps.common.utils import simple_mail
+from apps.splits.models import Splits
 from apps.users.models import Notification
 
 User = get_user_model()
@@ -31,8 +31,8 @@ def send_split_creation_mail(user_id, splits_id):
         'to_email': user.email,
         # 'to_email': 'omotosoeniola2@gmail.com',
         'content': {
-            'name': splits.name,
-            'creator' : user.name
+            'name': splits.title,
+            'creator' : user.first_name + ' ' + user.last_name
         }
     }
 
@@ -50,9 +50,7 @@ def send_split_notifications(user_id, splits_id):
         user=user,
         notification_type='split_created',
         title='Split Created Successfully',
-        message=f'Your split "{splits.name}" has been created.',
-        related_object_id=splits.id,
-        related_object_type='split',
+        message=f'Your split "{splits.title}" has been created.',
         is_read=False
     )
 

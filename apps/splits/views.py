@@ -3,8 +3,8 @@ from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 
 from .models import Splits
-from .serializer import SplitzSerializer
-from ..authentication.task import send_split_creation_mail, send_split_notifications
+from .serializer import SplitsSerializer
+from ..authentication.tasks import send_split_notifications
 from rest_framework import serializers
 
 
@@ -13,10 +13,10 @@ class SplitsViewSet(mixins.CreateModelMixin,
                     mixins.RetrieveModelMixin,
                     mixins.ListModelMixin,
                     viewsets.GenericViewSet):
-    serializer_class = SplitzSerializer
+    serializer_class = SplitsSerializer
     queryset = Splits.objects.all()
     permission_classes  = [IsAuthenticated]
-    authentication_classes = [TokenAuthentication]
+    # authentication_classes = []
     ordering_fields = ['created_at']
     # pagination_class = Standard
 

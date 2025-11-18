@@ -9,7 +9,7 @@ from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
 
 from apps.authentication.selector import user_get_login_data, get_user_token_for_user
-from apps.authentication.task import send_otp_code_mail
+from apps.authentication.tasks import send_otp_code_mail
 from apps.common.utils import simple_mail, generate_otp
 from apps.users.models import EmailOtp
 from apps.users.service import user_create

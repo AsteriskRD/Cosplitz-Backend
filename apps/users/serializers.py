@@ -18,13 +18,13 @@ class UserSerializer(serializers.ModelSerializer):
 class OutputSerializer(serializers.ModelSerializer):
     class Meta:
         model = get_user_model()
-        fields = ['id', 'email', 'username', 'first_name', 'last_name']
+        fields = ['id', 'email', 'nationality', 'first_name', 'last_name', 'username']
         read_only_fields = ['id']
 
 
 class UserUpdateSerializer(serializers.Serializer):
     email = serializers.EmailField(required=False)
-    username = serializers.CharField(required=False)
+    nationality = serializers.CharField(required=False)
     password = serializers.CharField(required=False)
     address = serializers.CharField(required=False)
     city = serializers.CharField(required=False)

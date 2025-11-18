@@ -50,7 +50,8 @@ INSTALLED_APPS = [
     # local apps
     'apps.common.apps.CommonConfig',
     'apps.users.apps.UsersConfig',
-    'apps.authentication.apps.AuthenticationConfig'
+    'apps.authentication.apps.AuthenticationConfig',
+    'apps.splits.apps.SplitsConfig',
 
 ]
 

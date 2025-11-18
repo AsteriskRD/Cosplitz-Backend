@@ -1,7 +1,8 @@
-from datetime import timezone
 from pickle import FALSE
 
 from django.http import Http404
+from django.utils import timezone
+
 from django.shortcuts import render
 from django.template.context_processors import request
 from rest_framework.authentication import TokenAuthentication
@@ -137,9 +138,10 @@ class NotificationViewSet(mixins.ListModelMixin,
                           mixins.RetrieveModelMixin,
                           viewsets.GenericViewSet):
 
+    queryset = Notification.objects.all()
     serializer_class = NotificationSerializers
     permission_classes = [IsAuthenticated]
-    authentication_classes = [TokenAuthentication]
+    # authentication_classes = [TokenAuthentication]
 
     def get_queryset(self):
         return Notification.objects.filter(user=self.request.user)
@@ -149,10 +151,10 @@ class NotificationViewSet(mixins.ListModelMixin,
         """Mark all notifications as read."""
         count = self.get_queryset().filter(is_read=False).update(is_read=True, read_at=timezone.now())
 
-        return Response({'message' : 'Successfully marded as read' })
+        return Response({'message' : 'Successfully marked as read' })
 
 
-    @action(detail=True, methods=["post"]):
+    @action(detail=True, methods=["post"])
     def mark_read(self,request, pk=None):
         """Mark specific notification as read."""
         notification = self.get_object()

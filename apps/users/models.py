@@ -35,6 +35,8 @@ class User(BaseModel, AbstractBaseUser, PermissionsMixin):
         verbose_name="email address", max_length=255, unique=True)
     first_name = models.CharField(verbose_name="first name", max_length=255)
     last_name = models.CharField(verbose_name="last name", max_length=255)
+    username = models.CharField(
+        verbose_name="username", max_length=255, unique=True,blank=True, null=True)
     nationality = models.CharField(
         verbose_name="nationality", max_length=255)
     is_admin = models.BooleanField(default=False)
@@ -118,7 +120,7 @@ class Notification(models.Model):
     )
     notification_type = models.CharField(max_length=50, choices=NOTIFICATION_TYPES)
     title = models.CharField(max_length=100)
-    text = models.TextField()
+    message = models.TextField()
     is_read = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     read_at = models.DateTimeField(null=True, blank=True)

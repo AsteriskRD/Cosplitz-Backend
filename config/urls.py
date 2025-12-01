@@ -39,8 +39,12 @@ urlpatterns = [
     path('api/splits/', include('apps.splits.urls')),
 
     path('api/', include(router.urls)),
+    
+    path('kyc/', include('apps.kyc.urls')),
+    path("admin-api/", include("apps.admin_panel.urls")),
 ]
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL,
                           document_root=settings.MEDIA_ROOT)
+

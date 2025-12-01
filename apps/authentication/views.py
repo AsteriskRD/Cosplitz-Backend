@@ -80,6 +80,8 @@ class UserLoginView(APIView):
         data = user_get_login_data(user=user)
         jwt_token = refresh = RefreshToken.for_user(user)
         otp_code = generate_otp(user)
+        user.is_active = True
+        user.save()
 
         return Response({
             "message" : "Login successful",

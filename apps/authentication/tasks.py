@@ -14,7 +14,6 @@ def send_otp_code_mail(user_email, otp_code):
     context = {
         'subject': 'Verification Otp',
         'to_email': user_email,
-        # 'to_email': 'omotosoeniola2@gmail.com',
         'content': {
             'otp': otp_code
         }

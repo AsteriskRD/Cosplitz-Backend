@@ -2,13 +2,14 @@ import random
 from datetime import timedelta
 from typing import List
 from django.conf import settings
-from django.core.mail import send_mail, EmailMessage
+from django.core.mail import send_mail, EmailMessage, get_connection
 from django.http import Http404
 from django.shortcuts import get_object_or_404
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 from django.utils import timezone
 
+from rest_framework.renderers import JSONRenderer
 from rest_framework.response import Response
 import logging
 
@@ -45,11 +46,21 @@ def simple_mail(html_template, context):
         html_message : str = render_to_string(html_template, context)
         plain_message = strip_tags(html_message)
 
+        connection = get_connection(
+            backend='django.core.mail.backends.smtp.EmailBackend',
+            fail_silently=False,
+            timeout=30,
+        )
+
+        # Open connection explicitly
+        connection.open()
+
         message = EmailMessage(
             subject=subject,
             body=html_message,
             from_email=from_email,
-            to=to_email
+            to=to_email,
+            connection=connection
         )
 
         message.content_subtype = "html"
@@ -60,7 +71,16 @@ def simple_mail(html_template, context):
     except Exception as e:
         logger.error(f"Failed to send email to {', '.join(to_email)} - Subject: {subject}")
         logger.exception(e)
+        # Re-raise for Celery to retry
         return False
+    # finally:
+    #     # Always close connection
+    #     if connection:
+    #         try:
+    #             connection.close()
+    #         except Exception as e:
+    #             logger.warning(f"Error closing SMTP connection: {e}")
+
 
 def generate_otp(user):
     otp_code : str = str(random.randint(100000, 999999))
@@ -75,3 +95,24 @@ def generate_otp(user):
     )
 
     return otp_code
+
+
+
+
+class CustomJSONRenderer(JSONRenderer):
+    def render(self, data, accepted_media_type=None, renderer_context=None):
+        response = renderer_context['response']
+
+        if response.status_code >= 400:
+            custom_response = {
+                'status': 'error',
+                'message': data.get('detail', 'An error occurred'),
+                'errors': data
+            }
+        else:
+            custom_response = {
+                'status': 'success',
+                'data': data
+            }
+
+        return super().render(custom_response, accepted_media_type, renderer_context)

@@ -7,6 +7,8 @@ from .serializer import SplitsSerializer
 from ..authentication.tasks import send_split_notifications
 from rest_framework import serializers
 
+from ..common.utils import CustomJSONRenderer
+
 
 class SplitsViewSet(mixins.CreateModelMixin,
                     mixins.UpdateModelMixin,
@@ -16,6 +18,7 @@ class SplitsViewSet(mixins.CreateModelMixin,
     serializer_class = SplitsSerializer
     queryset = Splits.objects.all()
     permission_classes  = [IsAuthenticated]
+    renderer_classes = [CustomJSONRenderer]
     # authentication_classes = []
     ordering_fields = ['created_at']
     # pagination_class = Standard

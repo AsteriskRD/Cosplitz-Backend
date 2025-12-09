@@ -45,7 +45,7 @@ INSTALLED_APPS = [
     # installed_app
     'rest_framework',
     'drf_spectacular',
-    ''
+    'corsheaders',
 
     # local apps
     'apps.common.apps.CommonConfig',
@@ -58,6 +58,8 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',

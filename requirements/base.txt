@@ -7,3 +7,4 @@ djangorestframework-simplejwt
 celery==5.3.4
 redis[hiredis]==5.0.1
 django-redis
+django-cors-headers

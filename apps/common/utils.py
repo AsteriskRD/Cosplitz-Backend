@@ -98,7 +98,7 @@ def generate_otp(user):
     return otp_code
 
 
-def send_otp_code_brevo(self, email, otp_code):
+def send_otp_code_brevo(email, otp_code):
     html_content = f"""
     <html>
         <body>

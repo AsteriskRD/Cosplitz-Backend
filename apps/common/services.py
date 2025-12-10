@@ -5,6 +5,10 @@ from django.utils import timezone
 
 from apps.common.types import DjangoModelType
 
+import sib_api_v3_sdk
+from sib_api_v3_sdk.rest import ApiException
+import os
+
 
 def model_update(
     *, instance: DjangoModelType, fields: List[str], data: Dict[str, Any], auto_updated_at=True
@@ -87,10 +91,7 @@ def model_update(
     return instance, has_updated
 
 
-# apps/common/utils.py or wherever your email function is
-import sib_api_v3_sdk
-from sib_api_v3_sdk.rest import ApiException
-import os
+
 
 
 def send_email_via_brevo_api(to_email, subject, html_content, text_content=None):
@@ -106,7 +107,7 @@ def send_email_via_brevo_api(to_email, subject, html_content, text_content=None)
 
     send_smtp_email = sib_api_v3_sdk.SendSmtpEmail(
         to=[{"email": to_email}],
-        sender={"email": os.getenv('BREVO_FROM_EMAIL'), "name": "Your App Name"},
+        sender={"email": os.getenv('BREVO_FROM_EMAIL'), "name": "Colsplitz"},
         subject=subject,
         html_content=html_content,
         text_content=text_content or html_content

@@ -27,11 +27,12 @@ def send_otp_code_mail(user_email, otp_code):
         'subject': 'Verification Otp',
         'to_email': user_email,
         'content': {
-            'otp': otp_code
+            'otp': otp_code,
+            'time' : 10,
         }
     }
-    template = 'emails/login_email.html'
-    send_otp_code_brevo(user_email, otp_code)
+    template = 'emails/otp_email.html'
+    send_otp_code_brevo(template, context)
 
 @shared_task
 def send_split_creation_mail(user_id, splits_id):

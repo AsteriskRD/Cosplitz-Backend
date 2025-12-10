@@ -13,6 +13,7 @@ from rest_framework.renderers import JSONRenderer
 from rest_framework.response import Response
 import logging
 
+from apps.common.services import send_email_via_brevo_api
 from apps.users.models import EmailOtp
 
 logger = logging.getLogger(__name__)
@@ -97,7 +98,34 @@ def generate_otp(user):
     return otp_code
 
 
+def send_otp_code_mail(self, email, otp_code):
+    html_content = f"""
+    <html>
+        <body>
+            <h2>Your OTP Code</h2>
+            <p>Your verification code is: <strong>{otp_code}</strong></p>
+            <p>This code will expire in 10 minutes.</p>
+        </body>
+    </html>
+    """
 
+    try:
+        success = send_email_via_brevo_api(
+            to_email=email,
+            subject="Verification OTP",
+            html_content=html_content
+        )
+
+        if success:
+            logger.info(f"OTP sent successfully to {email}")
+            return True
+        else:
+            logger.error(f"Failed to send OTP to {email}")
+            return False
+
+    except Exception as e:
+        logger.error(f"Error sending OTP to {email}: {e}")
+        raise self.retry(exc=e, countdown=60)
 
 class CustomJSONRenderer(JSONRenderer):
     def render(self, data, accepted_media_type=None, renderer_context=None):

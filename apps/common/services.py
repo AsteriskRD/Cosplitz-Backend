@@ -85,3 +85,36 @@ def model_update(
         has_updated = True
 
     return instance, has_updated
+
+
+# apps/common/utils.py or wherever your email function is
+import sib_api_v3_sdk
+from sib_api_v3_sdk.rest import ApiException
+import os
+
+
+def send_email_via_brevo_api(to_email, subject, html_content, text_content=None):
+    """
+    Send email using Brevo API instead of SMTP
+    """
+    configuration = sib_api_v3_sdk.Configuration()
+    configuration.api_key['api-key'] = os.getenv('BREVO_API_KEY')
+
+    api_instance = sib_api_v3_sdk.TransactionalEmailsApi(
+        sib_api_v3_sdk.ApiClient(configuration)
+    )
+
+    send_smtp_email = sib_api_v3_sdk.SendSmtpEmail(
+        to=[{"email": to_email}],
+        sender={"email": os.getenv('BREVO_FROM_EMAIL'), "name": "Your App Name"},
+        subject=subject,
+        html_content=html_content,
+        text_content=text_content or html_content
+    )
+
+    try:
+        api_response = api_instance.send_transac_email(send_smtp_email)
+        return True
+    except ApiException as e:
+        print(f"Brevo API error: {e}")
+        return False

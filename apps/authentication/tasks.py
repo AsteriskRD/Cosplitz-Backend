@@ -26,10 +26,8 @@ def send_otp_code_mail(user_email, otp_code):
     context = {
         'subject': 'Verification Otp',
         'to_email': user_email,
-        'content': {
-            'otp': otp_code,
-            'time' : 10,
-        }
+        'otp_code': otp_code,
+        'expiry_minutes' : 10,
     }
     template = 'emails/otp_email.html'
     send_otp_code_brevo(template, context)

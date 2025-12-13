@@ -9,7 +9,7 @@ from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
 
 from apps.authentication.selector import user_get_login_data, get_user_token_for_user
-from apps.authentication.tasks import send_otp_code_mail
+from apps.authentication.tasks import send_otp_code_mail, send_welcome_mail
 from apps.common.utils import simple_mail, generate_otp
 from apps.users.models import EmailOtp
 from apps.users.service import user_create
@@ -43,6 +43,11 @@ class UserRegisterView(APIView):
             return Response({
                 "error" : "Failed to create user", "details" :  str(e),
             },status=status.HTTP_400_BAD_REQUEST)
+        content = {
+            "full_name" : user.first_name + user.last_name,
+            "to_email" : user.email
+        }
+        send_welcome_mail.delay(content)
         return Response({
             "message" : "User created successfully",
             "user" : OutputSerializer(user).data,

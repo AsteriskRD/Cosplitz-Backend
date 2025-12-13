@@ -1,7 +1,7 @@
 from celery import shared_task
 from django.contrib.auth import get_user_model
 
-from apps.common.utils import simple_mail, send_otp_code_brevo
+from apps.common.utils import simple_mail, send_otp_code_brevo, send_welcome_mail_brevo, send_user_mail
 from apps.splits.models import Splits
 from apps.users.models import Notification
 
@@ -26,11 +26,25 @@ def send_otp_code_mail(user_email, otp_code):
     context = {
         'subject': 'Verification Otp',
         'to_email': user_email,
-        'otp_code': otp_code,
-        'expiry_minutes' : 10,
+        'html_contents' : {
+            'otp_code': otp_code,
+            'expiry_minutes': 10,
+        }
     }
     template = 'emails/otp_email.html'
-    send_otp_code_brevo(template, context)
+    send_user_mail(template, context)
+
+@shared_task()
+def send_welcome_mail(content):
+    template = 'emails/welcome_mail.html'
+    context = {
+        'subject': 'Welcome Mail',
+        'to_email': content.get('to_email'),
+        'html_contents' : {
+            'full_name' : content.get('full_name')
+        }
+    }
+    send_user_mail(template, context)
 
 @shared_task
 def send_split_creation_mail(user_id, splits_id):

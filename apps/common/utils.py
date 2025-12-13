@@ -98,16 +98,12 @@ def generate_otp(user):
     return otp_code
 
 
-def send_otp_code_brevo(template,context):
-    html_content = render_to_string(template, {
-            'otp_code': context['otp_code'],
-            'expiry_minutes': context['expiry_minutes'],
-        })
-
+def send_user_mail(template,context):
+    html_content = render_to_string(template, context.get('html_template'))
     try:
         success = send_email_via_brevo_api(
-            to_email=context['to_email'],
-            subject="Verification OTP",
+            to_email=context.get('to_email'),
+            subject=context.get('subject'),
             html_content=html_content
         )
 
@@ -122,6 +118,27 @@ def send_otp_code_brevo(template,context):
         logger.error(f"Error sending OTP to {context['to_email']} - Subject: {context['subject']}: {e}")
         # raise self.retry(exc=e, countdown=60)
 
+
+# def send_welcome_mail_brevo(template, user_email):
+#     html_content = render_to_string(template, )
+#
+#     try:
+#         success = send_email_via_brevo_api(
+#             to_email=user_email,
+#             subject="Welcome User",
+#             html_content=html_content
+#         )
+#
+#         if success:
+#             logger.info(f"OTP sent successfully to {user_email}")
+#             return True
+#         else:
+#             logger.error(f"Failed to send OTP to {user_email}")
+#             return False
+#
+#     except Exception as e:
+#         logger.error(f"Error sending OTP to {user_email}: {e}")
+#         # raise self.retry(exc=e, countdown=60)
 class CustomJSONRenderer(JSONRenderer):
     def render(self, data, accepted_media_type=None, renderer_context=None):
         response = renderer_context['response']

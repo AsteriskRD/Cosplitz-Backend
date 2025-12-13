@@ -1,5 +1,4 @@
 from django.contrib.auth import authenticate, get_user_model
-from django.core.mail import send_mail
 from django.utils import timezone
 from drf_spectacular.utils import extend_schema, OpenApiResponse
 from rest_framework import serializers, status
@@ -37,17 +36,16 @@ class UserRegisterView(APIView):
 
         try:
             user = user_create(**serializer.validated_data)
-            otp_code = generate_otp(user)
-            send_otp_code_mail.delay(user.email, otp_code)
+            content = {
+                "full_name": user.first_name + user.last_name,
+                "to_email": user.email
+            }
+            send_welcome_mail.delay(content)
         except Exception as e:
             return Response({
                 "error" : "Failed to create user", "details" :  str(e),
             },status=status.HTTP_400_BAD_REQUEST)
-        content = {
-            "full_name" : user.first_name + user.last_name,
-            "to_email" : user.email
-        }
-        send_welcome_mail.delay(content)
+
         return Response({
             "message" : "User created successfully",
             "user" : OutputSerializer(user).data,

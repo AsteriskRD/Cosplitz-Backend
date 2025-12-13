@@ -2,7 +2,7 @@ import random
 from datetime import timedelta
 from typing import List
 from django.conf import settings
-from django.core.mail import send_mail, EmailMessage, get_connection
+from django.core.mail import EmailMessage, get_connection
 from django.http import Http404
 from django.shortcuts import get_object_or_404
 from django.template.loader import render_to_string
@@ -10,7 +10,6 @@ from django.utils.html import strip_tags
 from django.utils import timezone
 
 from rest_framework.renderers import JSONRenderer
-from rest_framework.response import Response
 import logging
 
 from apps.common.services import send_email_via_brevo_api

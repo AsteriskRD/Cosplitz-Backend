@@ -98,7 +98,7 @@ def generate_otp(user):
 
 
 def send_user_mail(template,context):
-    html_content = render_to_string(template, context.get('html_template'))
+    html_content = render_to_string(template, context.get('html_contents'))
     try:
         success = send_email_via_brevo_api(
             to_email=context.get('to_email'),

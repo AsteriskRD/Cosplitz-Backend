@@ -56,8 +56,8 @@ INSTALLED_APPS = [
     'apps.admin_panel',
 
     # Cloundary
-    'cloudinary_storage',
-    'cloudinary',
+    # 'cloudinary_storage',
+    # 'cloudinary',
 
 ]
 

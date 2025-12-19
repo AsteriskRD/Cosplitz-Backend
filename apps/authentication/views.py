@@ -145,7 +145,7 @@ class VerifyOtp(APIView):
 
         # Mark User as verified
         user = email_otp.user
-        user.is_active= True
+        user.is_verified= True
         user.save()
 
         #deleete OTP

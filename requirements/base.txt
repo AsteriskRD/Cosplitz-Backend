@@ -9,3 +9,6 @@ redis[hiredis]==5.0.1
 django-redis
 django-cors-headers
 sib-api-v3-sdk
+cloudinary
+django-cloudinary-storage
+Pillow

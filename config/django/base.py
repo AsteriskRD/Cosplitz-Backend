@@ -55,6 +55,10 @@ INSTALLED_APPS = [
     'apps.kyc',
     'apps.admin_panel',
 
+    # Cloundary
+    'cloudinary_storage',
+    'cloudinary',
+
 ]
 
 MIDDLEWARE = [
@@ -192,5 +196,12 @@ EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = env('DEFAULT_FROM_EMAIL')
 
 CORS_ALLOW_ALL_ORIGINS = True
-# 84193586c935f52baf65ca968f9a340b
-# from config.settings.file_storage import *
+
+
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': 'your_cloud_name',
+    'API_KEY': 'your_api_key',
+    'API_SECRET': 'your_api_secret',
+}
+
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'

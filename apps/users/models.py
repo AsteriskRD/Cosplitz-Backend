@@ -41,6 +41,7 @@ class User(BaseModel, AbstractBaseUser, PermissionsMixin):
         verbose_name="nationality", max_length=255)
     is_admin = models.BooleanField(default=False)
     is_active = models.BooleanField(default=False)
+    is_verified = models.BooleanField(default=False)
 
     objects = BaseUserManager()
 

@@ -10,3 +10,9 @@ class SplitsSerializer(serializers.ModelSerializer):
         fields = '__all__'
         read_only_fields = ['id', 'user']
 
+        def update(self, instance, validated_data):
+            # Image upload is handled automatically
+            instance.avatar = validated_data.get('image_url', instance.avatar)
+            instance.save()
+            return instance
+

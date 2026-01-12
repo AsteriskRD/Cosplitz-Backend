@@ -2,6 +2,7 @@ from django.db.models import ForeignKey, IntegerField
 
 from apps.common.models import BaseModel
 from apps.users.models import User
+# from cloundary.model import
 
 
 from django.db import models
@@ -10,7 +11,7 @@ class Splits(BaseModel):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField(max_length=255)
     category = models.CharField(max_length=255)
-    image_url = models.CharField(null=True, blank=True)
+    image_url = models.ImageField(upload_to='splits/',null=True, blank=True)
     amount = models.IntegerField(default=0)
     max_participants = models.IntegerField(default=0)
     split_method = models.CharField(max_length=25)

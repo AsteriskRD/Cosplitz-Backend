@@ -12,6 +12,10 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 from config.settings.celery import *
 import os
 
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
+
 from django.template import Engine
 
 from config.env import BASE_DIR, env
@@ -199,14 +203,23 @@ DEFAULT_FROM_EMAIL = env('DEFAULT_FROM_EMAIL')
 CORS_ALLOW_ALL_ORIGINS = True
 
 
+
 CLOUDINARY_STORAGE = {
     'CLOUD_NAME': env('CLOUD_USERNAME'),
     'API_KEY': env('API_KEY_CLOUDIANRY'),
     'API_SECRET': env('API_SECRET_CLOUDIANRY'),
 }
+# settings.py
 
-DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
+STORAGES = {
+    "default": {
+        "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
+    },
+    "staticfiles": {
+        "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
+    },
+}
 
 #FLutterwave credenitals
 FLUTTERWAVE_BASE_URL = env('BASE_URL')

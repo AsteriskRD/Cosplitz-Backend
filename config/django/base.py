@@ -35,6 +35,10 @@ ALLOWED_HOSTS = ["*"]
 # Application definition
 
 INSTALLED_APPS = [
+    # Cloundary
+    'cloudinary_storage',
+    'cloudinary',
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -54,10 +58,7 @@ INSTALLED_APPS = [
     'apps.splits.apps.SplitsConfig',
     'apps.kyc',
     'apps.admin_panel',
-
-    # Cloundary
-    # 'cloudinary_storage',
-    # 'cloudinary',
+    'apps.payment'
 
 ]
 
@@ -199,9 +200,14 @@ CORS_ALLOW_ALL_ORIGINS = True
 
 
 CLOUDINARY_STORAGE = {
-    'CLOUD_NAME': 'your_cloud_name',
-    'API_KEY': 'your_api_key',
-    'API_SECRET': 'your_api_secret',
+    'CLOUD_NAME': env('CLOUD_USERNAME'),
+    'API_KEY': env('API_KEY_CLOUDIANRY'),
+    'API_SECRET': env('API_SECRET_CLOUDIANRY'),
 }
 
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+
+
+#FLutterwave credenitals
+FLUTTERWAVE_BASE_URL = env('BASE_URL')
+FLUTTERWAVE_SECRET_KEY = env('FLUTTERWAVE_SECRET_KEY')

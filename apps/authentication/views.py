@@ -9,7 +9,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 
 from apps.authentication.selector import user_get_login_data, get_user_token_for_user
 from apps.authentication.tasks import send_otp_code_mail, send_welcome_mail
-from apps.common.utils import simple_mail, generate_otp
+from apps.common.utils.actions import simple_mail, generate_otp
 from apps.users.models import EmailOtp
 from apps.users.service import user_create
 from apps.users.selector import user_get
@@ -35,12 +35,14 @@ class UserRegisterView(APIView):
         serializer.is_valid(raise_exception=True)
 
         try:
-            user = user_create(**serializer.validated_data)
+            user = serializer.save()
             content = {
                 "full_name": user.first_name + user.last_name,
                 "to_email": user.email
             }
             send_welcome_mail.delay(content)
+            send_otp_code_mail.delay(user.id)
+            jwt_token = RefreshToken.for_user(user)
         except Exception as e:
             return Response({
                 "error" : "Failed to create user", "details" :  str(e),
@@ -49,6 +51,8 @@ class UserRegisterView(APIView):
         return Response({
             "message" : "User created successfully",
             "user" : OutputSerializer(user).data,
+            "token": str(jwt_token.access_token),
+            "refresh_token": str(jwt_token),
         }, status=status.HTTP_201_CREATED)
 
 class UserLoginView(APIView):
@@ -82,7 +86,6 @@ class UserLoginView(APIView):
 
         data = user_get_login_data(user=user)
         jwt_token = refresh = RefreshToken.for_user(user)
-        otp_code = generate_otp(user)
         user.is_active = True
         user.save()
 

@@ -11,4 +11,5 @@ django-cors-headers
 sib-api-v3-sdk
 cloudinary
 django-cloudinary-storage
-Pillow
+pillow
+requests

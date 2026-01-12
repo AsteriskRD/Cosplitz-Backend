@@ -1,5 +1,5 @@
 from  .models import User
-from ..common.utils import get_object
+from ..common.utils.actions import get_object
 
 
 def user_get(user_id):

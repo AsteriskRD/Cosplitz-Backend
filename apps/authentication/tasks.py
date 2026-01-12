@@ -1,18 +1,19 @@
 from celery import shared_task
 from django.contrib.auth import get_user_model
 
-from apps.common.utils import simple_mail, send_user_mail
+from apps.common.utils.actions import simple_mail, send_user_mail, generate_otp
 from apps.splits.models import Splits
 from apps.users.models import Notification
 
 User = get_user_model()
 
 @shared_task
-def send_otp_code_mail(user_email, otp_code):
-
+def send_otp_code_mail(user_id):
+    user = User.objects.get(id=user_id)
+    otp_code = generate_otp(user)
     context = {
         'subject': 'Verification Otp',
-        'to_email': user_email,
+        'to_email': user.email,
         'html_contents' : {
             'otp_code': otp_code,
             'expiry_minutes': 10,

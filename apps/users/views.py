@@ -14,7 +14,6 @@ from rest_framework import serializers, status, mixins, viewsets
 
 from apps.users.selector import user_get
 from apps.users.serializers import UserSerializer, UserUpdateSerializer, NotificationSerializers
-from apps.common.utils import simple_mail, generate_otp
 from apps.users.service import user_create, user_update
 
 

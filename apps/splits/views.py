@@ -8,9 +8,8 @@ from .models import Splits
 from .serializer import SplitsSerializer
 from .services import join_split, fetch_splits_joined_by_user
 from ..authentication.tasks import send_split_notifications
-from rest_framework import serializers
 
-from ..common.utils import CustomJSONRenderer
+from ..common.utils.response import CustomJSONRenderer
 
 
 class SplitsViewSet(mixins.CreateModelMixin,

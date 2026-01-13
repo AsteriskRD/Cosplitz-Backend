@@ -36,18 +36,18 @@ class UserRegisterView(APIView):
 
         try:
             user = serializer.save()
-            content = {
-                "full_name": user.first_name + user.last_name,
-                "to_email": user.email
-            }
-            send_welcome_mail.delay(content)
-            send_otp_code_mail.delay(user.id)
             jwt_token = RefreshToken.for_user(user)
         except Exception as e:
             return Response({
                 "error" : "Failed to create user", "details" :  str(e),
             },status=status.HTTP_400_BAD_REQUEST)
 
+        content = {
+            "full_name": user.first_name + user.last_name,
+            "to_email": user.email
+        }
+        send_welcome_mail.delay(content)
+        send_otp_code_mail.delay(user.id)
         return Response({
             "message" : "User created successfully",
             "user" : OutputSerializer(user).data,

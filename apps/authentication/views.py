@@ -108,8 +108,12 @@ class SendUserOtp(APIView):
                 'message': 'User does not exist',
                 'status_code': status.HTTP_404_NOT_FOUND
             }, status=status.HTTP_404_NOT_FOUND)
-        otp_code = generate_otp(user)
-        send_otp_code_mail.delay(user.email, otp_code)
+        try:
+            send_otp_code_mail.delay(user.id)
+        except Exception as e:
+            return Response({
+                "error": "Failed to send otp", "details": str(e),
+            }, status=status.HTTP_400_BAD_REQUEST)
 
         # if not success :
         #     return Response({'error' : "message not sent"})
